@@ -9,11 +9,16 @@ import (
 	"regexp"
 	"strings"
 
-	. "github.com/abdollahpour/micro-pdf-generator/internal/pdf"
-	. "github.com/abdollahpour/micro-pdf-generator/internal/templatify"
+	"github.com/abdollahpour/micro-pdf-generator/internal/pdf"
+	"github.com/abdollahpour/micro-pdf-generator/internal/templatify"
 )
 
-func PdfHandler(res http.ResponseWriter, req *http.Request) {
+type PdfHandler struct {
+	PdfGenerator pdf.PdfGenerator
+	Templatify   templatify.Templatify
+}
+
+func (p PdfHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	m1 := regexp.MustCompile(`[^a-z0-9]`)
 	templateName := m1.ReplaceAllString(strings.ToLower(req.URL.Path), "")
 
@@ -25,10 +30,10 @@ func PdfHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	templateFile, err := ApplyTemplate(templateName, templateData)
+	templateFile, err := p.Templatify.ApplyTemplate(templateName, templateData)
 	if err != nil {
 		switch e := err.(type) {
-		case *TemplateError:
+		case *templatify.TemplateError:
 			if e.NotFound {
 				http.Error(res, e.Error(), 404)
 			} else if !e.Processed {
@@ -41,7 +46,7 @@ func PdfHandler(res http.ResponseWriter, req *http.Request) {
 	}
 	defer os.Remove(templateFile)
 
-	pdfFile, err := RenderUrlToPdf(templateFile, "#main")
+	pdfFile, err := p.PdfGenerator.RenderUrlToPdf(templateFile, "#main")
 	if err != nil {
 		http.Error(res, err.Error(), 500)
 		return

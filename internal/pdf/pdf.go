@@ -15,13 +15,21 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func RenderUrlToPdf(templateFile string, sel string) (string, error) {
+type PdfGenerator interface {
+	RenderUrlToPdf(templateFile string, sel string) (string, error)
+}
+
+type ChromedpPdfGenerator struct {
+	Config config.Configuration
+}
+
+func (s ChromedpPdfGenerator) RenderUrlToPdf(templateFile string, sel string) (string, error) {
 	var pdfBuffer []byte
 
 	ctx, cancel := chromedp.NewContext(context.Background(), chromedp.WithLogf(log.Printf))
 	defer cancel()
 
-	ctx, cancel = context.WithTimeout(ctx, time.Duration(config.Config.Timeout)*time.Second)
+	ctx, cancel = context.WithTimeout(ctx, time.Duration(s.Config.Timeout)*time.Second)
 	defer cancel()
 
 	absTemplateFile, err := filepath.Abs(templateFile)
