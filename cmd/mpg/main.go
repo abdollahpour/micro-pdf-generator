@@ -12,7 +12,7 @@ import (
 
 func main() {
 	config := config.EnvConfig
-	pdfGenerator := pdf.ChromedpPdfGenerator{Config: config}
+	pdfGenerator := pdf.ChromedpGenerator{Config: config}
 	pdfHandler := handler.PdfHandler{PdfGenerator: pdfGenerator}
 
 	http.Handle("/", pdfHandler)

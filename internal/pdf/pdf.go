@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"path/filepath"
-	"strings"
+	"path"
 	"time"
 
 	"github.com/abdollahpour/micro-pdf-generator/internal/config"
@@ -15,31 +14,28 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-type PdfGenerator interface {
-	RenderUrlToPdf(templateFile string, sel string) (string, error)
+// Generator interface
+type Generator interface {
+	RenderHTMLFile(templateFile string, sel string) (string, error)
 }
 
-type ChromedpPdfGenerator struct {
+// ChromedpGenerator uses Chromedp and chromium to generate PDFs
+type ChromedpGenerator struct {
 	Config config.Configuration
 }
 
-func (s ChromedpPdfGenerator) RenderUrlToPdf(templateFile string, sel string) (string, error) {
-	var pdfBuffer []byte
-
+// RenderHTMLFile render PDF from html file
+func (s ChromedpGenerator) RenderHTMLFile(htmlFile string, sel string) (string, error) {
 	ctx, cancel := chromedp.NewContext(context.Background(), chromedp.WithLogf(log.Printf))
 	defer cancel()
 
 	ctx, cancel = context.WithTimeout(ctx, time.Duration(s.Config.Timeout)*time.Second)
 	defer cancel()
 
-	absTemplateFile, err := filepath.Abs(templateFile)
-	if err != nil {
-		log.Print(err)
-		return "", errors.New(fmt.Sprintf("Failed to create the temporary %v file"))
-	}
+	var pdfBuffer []byte
 
 	tasks := chromedp.Tasks{
-		chromedp.Navigate("file://" + absTemplateFile),
+		chromedp.Navigate("file://" + path.Join(s.Config.TempDir, htmlFile)),
 		chromedp.WaitVisible(sel, chromedp.ByID),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			buf, _, err := page.PrintToPDF().WithPrintBackground(false).Do(ctx)
@@ -51,19 +47,23 @@ func (s ChromedpPdfGenerator) RenderUrlToPdf(templateFile string, sel string) (s
 		}),
 	}
 
-	err = chromedp.Run(ctx, tasks)
+	err := chromedp.Run(ctx, tasks)
 	if err != nil {
 		log.Println(err)
 		return "", errors.New("Failed to render the PDF")
 	}
 
-	pdfFile := strings.Trim(absTemplateFile, ".html") + ".pdf"
+	pdfFile, err := ioutil.TempFile("", htmlFile)
+	if err != nil {
+		log.Println(err)
+		return "", errors.New("Failed to render the PDF")
+	}
 
-	ioutil.WriteFile(pdfFile, pdfBuffer, 0644)
+	pdfFile.Write(pdfBuffer)
 	if err != nil {
 		log.Println(fmt.Sprintf("Error to write pdf"))
 		return "", err
 	}
 
-	return pdfFile, err
+	return pdfFile.Name(), err
 }

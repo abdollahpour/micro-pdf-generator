@@ -14,7 +14,7 @@ import (
 )
 
 type PdfHandler struct {
-	PdfGenerator pdf.PdfGenerator
+	PdfGenerator pdf.Generator
 	Templatify   templatify.Templatify
 }
 
@@ -46,7 +46,7 @@ func (p PdfHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	}
 	defer os.Remove(templateFile)
 
-	pdfFile, err := p.PdfGenerator.RenderUrlToPdf(templateFile, "#main")
+	pdfFile, err := p.PdfGenerator.RenderHTMLFile(templateFile, "#main")
 	if err != nil {
 		http.Error(res, err.Error(), 500)
 		return

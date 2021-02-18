@@ -13,5 +13,11 @@ archive:
 run:
 	go run cmd/mpg/main.go
 
+test:
+	go test -coverprofile=cover.out -cover ./...
+
+coverage: test
+	go tool cover -func cover.out
+
 spec:
 	go test ./...
