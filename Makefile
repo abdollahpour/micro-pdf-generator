@@ -13,6 +13,9 @@ archive:
 run:
 	go run cmd/mpg/main.go
 
+image:
+	docker build -t $(name) -f docker/Dockerfile . 
+
 test:
 	go test -coverprofile=cover.out -cover ./...
 

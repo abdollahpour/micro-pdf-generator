@@ -4,7 +4,6 @@ COPY cmd/ cmd/
 COPY internal/ internal/
 COPY go.mod ./
 RUN go get -d -u ./...
-RUN ls -l
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app /build/cmd/mpg/main.go
 
 FROM alpine:3.13

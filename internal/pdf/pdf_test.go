@@ -18,7 +18,7 @@ func TestChromedpGenerator(t *testing.T) {
 	htmlFile, err := os.Create(tempFile.Name())
 	assert.Nil(t, err)
 
-	err = ioutil.WriteFile(htmlFile.Name(),[]byte(`<!DOCTYPE html>
+	err = ioutil.WriteFile(htmlFile.Name(), []byte(`<!DOCTYPE html>
 		<html lang="en">
 		
 		<head>
@@ -37,7 +37,7 @@ func TestChromedpGenerator(t *testing.T) {
 	chromedpGenerator := ChromedpGenerator{
 		Config: config.EnvConfig,
 	}
-	pdfFile, err := chromedpGenerator.RenderHTMLFile("TestChromedpGenerator.html", "main")
+	pdfFile, err := chromedpGenerator.RenderHTMLFile(tempFile.Name(), "main")
 	assert.Nil(t, err)
 	defer os.Remove(pdfFile)
 
