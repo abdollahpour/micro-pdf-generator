@@ -32,7 +32,7 @@ type GoTemplatify struct {
 }
 
 func (g GoTemplatify) ApplyTemplate(templateName string, data interface{}) (string, error) {
-	templateFile := filepath.FromSlash(g.Config.TemplateDir + "/" + templateName)
+	templateFile := filepath.Join(g.Config.TemplateDir, templateName)
 	_, err := os.Stat(templateFile)
 	if os.IsNotExist(err) {
 		return "", &TemplateError{
@@ -57,8 +57,7 @@ func (g GoTemplatify) ApplyTemplate(templateName string, data interface{}) (stri
 		return "", &TemplateError{msg: fmt.Sprintf("Error to process the template %v", templateName)}
 	}
 
-	tempFile := "temp_" + strconv.FormatInt(time.Now().UnixNano(), 16) + ".html"
-
+	tempFile := filepath.Join(g.Config.TempDir, "temp_"+strconv.FormatInt(time.Now().UnixNano(), 16)+".html")
 	err = ioutil.WriteFile(tempFile, []byte(templateBuf.String()), 0644)
 	if err != nil {
 		log.Print(err)

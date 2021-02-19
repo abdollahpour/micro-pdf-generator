@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"path"
+	"strings"
 	"time"
 
 	"github.com/abdollahpour/micro-pdf-generator/internal/config"
@@ -35,7 +35,7 @@ func (s ChromedpGenerator) RenderHTMLFile(htmlFile string, sel string) (string, 
 	var pdfBuffer []byte
 
 	tasks := chromedp.Tasks{
-		chromedp.Navigate("file://" + path.Join(s.Config.TempDir, htmlFile)),
+		chromedp.Navigate("file://" + htmlFile),
 		chromedp.WaitVisible(sel, chromedp.ByID),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			buf, _, err := page.PrintToPDF().WithPrintBackground(false).Do(ctx)
@@ -53,17 +53,12 @@ func (s ChromedpGenerator) RenderHTMLFile(htmlFile string, sel string) (string, 
 		return "", errors.New("Failed to render the PDF")
 	}
 
-	pdfFile, err := ioutil.TempFile("", htmlFile)
-	if err != nil {
-		log.Println(err)
-		return "", errors.New("Failed to render the PDF")
-	}
-
-	pdfFile.Write(pdfBuffer)
+	pdfFile := strings.TrimRight(htmlFile, ".html") + ".pdf"
+	ioutil.WriteFile(pdfFile, pdfBuffer, 0644)
 	if err != nil {
 		log.Println(fmt.Sprintf("Error to write pdf"))
 		return "", err
 	}
 
-	return pdfFile.Name(), err
+	return pdfFile, err
 }

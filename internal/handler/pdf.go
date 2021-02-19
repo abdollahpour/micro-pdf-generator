@@ -19,8 +19,13 @@ type PdfHandler struct {
 }
 
 func (p PdfHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	m1 := regexp.MustCompile(`[^a-z0-9]`)
-	templateName := m1.ReplaceAllString(strings.ToLower(req.URL.Path), "")
+	m1 := regexp.MustCompile("\\/pdf\\/([a-z0-9]+).pdf")
+	match := m1.FindStringSubmatch(strings.ToLower(req.URL.Path))
+	if len(match) != 2 {
+		http.Error(res, "Not found", 404)
+		return
+	}
+	templateName := match[1]
 
 	var templateData interface{}
 	err := json.NewDecoder(req.Body).Decode(&templateData)
@@ -30,7 +35,7 @@ func (p PdfHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	templateFile, err := p.Templatify.ApplyTemplate(templateName, templateData)
+	templateFile, err := p.Templatify.ApplyTemplate(templateName+".html", templateData)
 	if err != nil {
 		switch e := err.(type) {
 		case *templatify.TemplateError:
