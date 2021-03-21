@@ -1,9 +1,9 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/abdollahpour/micro-pdf-image)
-[![Coverage Status](https://coveralls.io/repos/github/abdollahpour/micro-pdf-image/badge.svg?branch=master)](https://coveralls.io/github/abdollahpour/micro-pdf-image?branch=master)
-[![Build Status](https://secure.travis-ci.org/abdollahpour/micro-pdf-image.svg?branch=master)](http://travis-ci.org/abdollahpour/micro-pdf-image)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/abdollahpour/micro-pdf-generator)
+[![Coverage Status](https://coveralls.io/repos/github/abdollahpour/micro-pdf-generator/badge.svg?branch=master)](https://coveralls.io/github/abdollahpour/micro-pdf-generator?branch=master)
+[![Build Status](https://secure.travis-ci.org/abdollahpour/micro-pdf-generator.svg?branch=master)](http://travis-ci.org/abdollahpour/micro-pdf-generator)
 
-# micro-pdf-image
+# micro-pdf-generator
 
 Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. You can use query param, string, and URL as an input and go template engine to update input data as well. Ex
 

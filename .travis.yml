@@ -9,11 +9,13 @@ addons:
 
 before_install:
   - make get
+  - go get github.com/mattn/goveralls
 
 script:
   - export CHROMEDP_TEST_RUNNER=google-chrome-stable
   - export CHROMEDP_DISABLE_GPU=true
-  - make goveralls
+  - make test
+  - $GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
 
 notifications:
   email: true
