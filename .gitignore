@@ -1,4 +1,4 @@
 .*
 !.gitignore
 bin
-cover.out
+coverage.out

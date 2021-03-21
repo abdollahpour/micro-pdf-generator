@@ -34,7 +34,7 @@ func TestChromedpGenerator(t *testing.T) {
 	`), 0777)
 	assert.Nil(t, err)
 
-	chromedpGenerator := NewChromedpGenerator(true, 10, os.TempDir())
+	chromedpGenerator := NewChromedpGenerator(10, os.TempDir())
 	pdfFile, err := chromedpGenerator.RenderHTMLFile(tempFile.Name(), "#main")
 	assert.Nil(t, err)
 	defer os.Remove(pdfFile)

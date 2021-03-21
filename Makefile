@@ -13,14 +13,17 @@ archive:
 run:
 	go run cmd/mpg/main.go
 
+get:
+	go get -d -u ./...
+
 image:
 	docker build -t $(name) -f docker/Dockerfile . 
 
 test:
-	go test -coverprofile=cover.out -cover ./...
+	go test -coverprofile=coverage.out -cover ./...
 
-coverage: test
-	go tool cover -func cover.out
+goveralls:
+	goveralls -service=travis-ci -coverprofile=coverage.out
 
 spec:
 	go test ./...
