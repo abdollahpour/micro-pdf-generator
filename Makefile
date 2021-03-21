@@ -23,7 +23,7 @@ test:
 	go test -coverprofile=coverage.out -cover ./...
 
 goveralls:
-	goveralls -service=travis-ci -coverprofile=coverage.out
+	$GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
 
 spec:
 	go test ./...
