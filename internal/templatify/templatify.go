@@ -2,67 +2,53 @@ package templatify
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
-	"os"
-	"path/filepath"
-	"strconv"
-	"time"
 
-	"github.com/abdollahpour/micro-pdf-generator/internal/config"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 type Templatify interface {
-	ApplyTemplate(name string, data interface{}) (string, error)
+	ApplyTemplate(templateData string, data interface{}) (string, error)
 }
 
 type TemplateError struct {
-	NotFound  bool
 	Processed bool
 	msg       string
 }
 
-func (e *TemplateError) Error() string { return e.msg }
-
 // GoTemplatify is using go built-in template engine
 type GoTemplatify struct {
-	Config config.Configuration
+	tempDir string
 }
 
-func (g GoTemplatify) ApplyTemplate(templateName string, data interface{}) (string, error) {
-	templateFile := filepath.Join(g.Config.TemplateDir, templateName)
-	_, err := os.Stat(templateFile)
-	if os.IsNotExist(err) {
-		return "", &TemplateError{
-			NotFound: true,
-			msg:      fmt.Sprintf("Template %v not found (%v)", templateName, templateFile),
-		}
-	}
+func NewGoTemplatify(tempDir string) *GoTemplatify {
+	return &GoTemplatify{tempDir: tempDir}
+}
 
-	teml, err := template.New(templateName).ParseFiles(templateFile)
+func (g GoTemplatify) ApplyTemplate(templateData string, data interface{}) (string, error) {
+	teml, err := template.New("template").Parse(templateData)
 	if err != nil {
-		log.Print(err)
-		return "", &TemplateError{
-			Processed: false,
-			msg:       fmt.Sprintf("Error to parse %v", templateName),
-		}
+		log.WithError(err).WithField("data", templateData).Printf("Failed to parse the template")
+		return "", errors.Wrap(err, "Failed to parse the template")
 	}
 
 	templateBuf := new(bytes.Buffer)
 	err = teml.Execute(templateBuf, data)
 	if err != nil {
-		log.Print(err)
-		return "", &TemplateError{msg: fmt.Sprintf("Error to process the template %v", templateName)}
+		log.WithError(err).WithField("data", templateData).Printf("Failed to process the template")
+		return "", errors.Wrap(err, "Failed to process the template")
 	}
 
-	tempFile := filepath.Join(g.Config.TempDir, "temp_"+strconv.FormatInt(time.Now().UnixNano(), 16)+".html")
-	err = ioutil.WriteFile(tempFile, []byte(templateBuf.String()), 0644)
+	tempFile, err := ioutil.TempFile(g.tempDir, "*.html")
 	if err != nil {
-		log.Print(err)
-		return "", &TemplateError{msg: fmt.Sprintf("Eror to write template file %v", templateName)}
+		log.Fatalln("Failed to create temp file")
+	}
+	_, err = tempFile.Write([]byte(templateBuf.String()))
+	if err != nil {
+		log.Fatalln("Failed to write to temp file")
 	}
 
-	return tempFile, nil
+	return tempFile.Name(), nil
 }
