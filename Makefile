@@ -20,7 +20,7 @@ image:
 	docker build -t $(name) -f docker/Dockerfile . 
 
 test:
-	go test -coverprofile=coverage.out -cover ./...
+	go test -covermode=count -coverprofile=coverage.out -cover ./...
 
 goveralls:
 	$$GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
