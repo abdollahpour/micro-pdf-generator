@@ -1,4 +1,5 @@
 .*
 !.gitignore
+!.travis.yaml
 bin
 coverage.out

@@ -1,0 +1,19 @@
+language: go
+
+go:
+  - "1.16"
+
+addons:
+  apt:
+    chrome: stable
+
+before_install:
+  - make get
+
+script:
+  - export CHROMEDP_TEST_RUNNER=google-chrome-stable
+  - export CHROMEDP_DISABLE_GPU=true
+  - make goveralls
+
+notifications:
+  email: true
