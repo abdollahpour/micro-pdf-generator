@@ -1,10 +1,32 @@
-You can generate PDFs fast and ralaible on fly!
+Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. You can use query param, string, and URL as an input and go template engine to update input data as well. Ex
 
-    curl -F template="http://to-your-template?v1" -F data=@sample.json https://pdf-generator-address
+```sh
+curl -F template="http://to-html-file" https://pdf-generator-address/pdf/sample.pdf
+curl -F template=@local_html_file https://pdf-generator-address/pdf/sample.pdf
+curl -F https://pdf-generator-address/pdf/sample.pdf?template=<html><body>Some_HTML</body></html>
+curl -F template="http://to-your-template" -F data=@sample.json -F download=true -F waitFor=body https://pdf-generator-address/pdf/sample.pdf
+```
 
-And you have your PDF ready!
+Parameters
+---
 
-You can either pass template and JSON data as string, URL address or file in your POST request.
+For any given parameter you can use form field, form file or query string.
+
+* **template** (required): template content in HTML format. If you want to use template engine you can use [Golang template format](https://golang.org/pkg/text/template/).
+* **data** (optional default empty): JSON data if you use golang template in your HTML.
+download (optional default false): force browser to download the PDF (not open).
+* **waitFor** (optional default body): Query string that engine uses to wait for HTML to be ready.
+
+Configurations
+---
+
+micro-pdf-generator without any configurations but if you need more customization you can set some environment variables:
+
+* **timeout** (default 15): Default timeout to fetch remote template (using URL)
+* **port** (default 8080)
+* **host** (default 0.0.0.0)
+* **temp_dir** (default OS temp dir)
+* **max_size** (default 6): Maximum template size in MB
 
 To build
 ===
