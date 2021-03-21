@@ -1,4 +1,4 @@
-FROM golang:1.15 AS builder
+FROM golang:1.16 AS builder
 WORKDIR /build
 COPY cmd/ cmd/
 COPY internal/ internal/
@@ -23,7 +23,6 @@ RUN echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repos
 
 WORKDIR /app/
 COPY --from=builder /build/app .
-COPY templates ./
 
 RUN addgroup -S app && adduser -S -G app app
 RUN chown -R app:app /app
