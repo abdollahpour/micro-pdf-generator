@@ -21,10 +21,12 @@ script:
   - export CHROMEDP_TEST_RUNNER=google-chrome-stable
   - export CHROMEDP_DISABLE_GPU=true
   - make test
-  - $GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
   - docker build --pull --cache-from "$DOCKER_IMAGE:latest" --build-arg GOLANG_VERSION="${GOLANG_VERSION%.x}" --build-arg LIBVIPS_VERSION="${LIBVIPS}" --build-arg MIM_VERSION="${MIM_VERSION}" --tag "$DOCKER_IMAGE:${MIM_VERSION}" --tag "$DOCKER_IMAGE:latest" -f docker/Dockerfile .
   - docker push "$DOCKER_IMAGE:${MIM_VERSION}"
   - docker push "$DOCKER_IMAGE:latest"
+
+after_success:
+  - $GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
 
 notifications:
   email: true
