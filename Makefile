@@ -1,5 +1,5 @@
-APP_VERSION:=development
-GOLANG_VERSION=1.16
+APP_VERSION:=edge
+GOLANG_VERSION:=1.16
 DOCKER_IMAGE:=abdollahpour/micro-pdf-generator
 
 compile:
@@ -25,10 +25,13 @@ image:
 		--build-arg GOLANG_VERSION="$(GOLANG_VERSION)" \
 		--build-arg APP_VERSION="$(APP_VERSION)" \
 		--tag "$(DOCKER_IMAGE):$(APP_VERSION)" \
-		--tag "$(DOCKER_IMAGE):latest" \
 		--file docker/Dockerfile .
 	docker push "$(DOCKER_IMAGE):$(APP_VERSION)"
-	docker push "$(DOCKER_IMAGE):latest"
+	# We update latest when a real version change happens
+	if [ "$(APP_VERSION)" != "edge" ]; then \
+		docker tag "$(DOCKER_IMAGE):$(APP_VERSION)" "$(DOCKER_IMAGE):latest"; \
+		docker push "$(DOCKER_IMAGE):latest"; \
+	fi
 
 test:
 	go test -covermode=count -coverprofile=coverage.out -cover ./...

@@ -10,7 +10,7 @@ addons:
 env:
   global:
     - GOLANG_VERSION="${TRAVIS_GO_VERSION}"
-    - APP_VERSION="${TRAVIS_TAG:-development}"
+    - APP_VERSION="${TRAVIS_TAG:-edge}"
 
 before_install:
   - export CHROMEDP_TEST_RUNNER=google-chrome-stable
