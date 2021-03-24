@@ -15,17 +15,15 @@ type Configuration struct {
 	MaxSize int    `envconfig:"max_size" required:"true" default:"6"`
 }
 
-var (
-	EnvConfig Configuration
-)
-
-func init() {
-	envconfig.Process("MPG", &EnvConfig)
-	if len(EnvConfig.TempDir) == 0 {
+func NewEnvConfiguration() Configuration {
+	var conf Configuration
+	envconfig.Process("MPG", &conf)
+	if len(conf.TempDir) == 0 {
 		dir, err := ioutil.TempDir("", "*.html")
 		if err != nil {
 			log.Fatal(err)
 		}
-		EnvConfig.TempDir = dir
+		conf.TempDir = dir
 	}
+	return conf
 }

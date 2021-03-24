@@ -1,10 +1,12 @@
-FROM golang:1.16 AS builder
+ARG GOLANG_VERSION=1.16
+FROM golang:${GOLANG_VERSION} AS builder
+ARG APP_VERSION=developement
 WORKDIR /build
 COPY cmd/ cmd/
 COPY internal/ internal/
 COPY go.mod ./
 RUN go get -d -u ./...
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app /build/cmd/mpg/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-X main.Version=${APP_VERSION}" -a -installsuffix cgo -o app /build/cmd/server/main.go
 
 FROM alpine:3.13
 
@@ -28,4 +30,4 @@ RUN addgroup -S app && adduser -S -G app app
 RUN chown -R app:app /app
 USER app
 
-CMD ./app
+ENTRYPOINT [ "./app" ]

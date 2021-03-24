@@ -1,29 +1,37 @@
+APP_VERSION:=development
+GOLANG_VERSION=1.16
+DOCKER_IMAGE:=abdollahpour/micro-pdf-generator
+
 compile:
 	for i in darwin linux windows ; do \
-		GOOS="$${i}" GOARCH=amd64 go build -o bin/mpg-"$${i}"-amd64 cmd/mpg/main.go; \
+		GOOS="$${i}" GOARCH=amd64 go build -ldflags "-X main.Version=$(APP_VERSION)" -o bin/mpg-server-"$${i}"-amd64 cmd/server/main.go; \
 	done
 
 archive:
 	rm -f bin/*.zip
 	for i in darwin linux windows ; do \
-		zip -j "bin/mpg-$${i}-amd64.zip" "bin/mpg-$${i}-amd64" -x "*.DS_Store"; \
-		zip "bin/mpg-$${i}-amd64.zip" -r templates; \
+		zip -j "bin/mpg-$${i}-amd64.zip" "bin/mpg-server-$${i}-amd64" -x "*.DS_Store"; \
 	done
 
 run:
-	go run cmd/mpg/main.go
+	go run cmd/server/main.go
 
 get:
 	go get -d -u ./...
 
 image:
-	docker build -t $(name) -f docker/Dockerfile . 
+	docker build --pull \
+		--cache-from "$(DOCKER_IMAGE):latest" \
+		--build-arg GOLANG_VERSION="$(GOLANG_VERSION)" \
+		--build-arg APP_VERSION="$(APP_VERSION)" \
+		--tag "$(DOCKER_IMAGE):$(APP_VERSION)" \
+		--tag "$(DOCKER_IMAGE):latest" \
+		--file docker/Dockerfile .
+	docker push "$(DOCKER_IMAGE):$(APP_VERSION)"
+	docker push "$(DOCKER_IMAGE):latest"
 
 test:
 	go test -covermode=count -coverprofile=coverage.out -cover ./...
 
 goveralls:
 	$$GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
-
-spec:
-	go test ./...
