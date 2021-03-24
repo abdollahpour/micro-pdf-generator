@@ -11,7 +11,7 @@ import (
 )
 
 func TestChromedpGenerator(t *testing.T) {
-	tempFile, err := os.Create(path.Join(config.EnvConfig.TempDir, "TestChromedpGenerator.html"))
+	tempFile, err := os.Create(path.Join(config.NewEnvConfiguration().TempDir, "TestChromedpGenerator.html"))
 	assert.Nil(t, err)
 	defer os.Remove(tempFile.Name())
 

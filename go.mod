@@ -1,6 +1,6 @@
 module github.com/abdollahpour/micro-pdf-generator
 
-go 1.15
+go 1.16
 
 require (
 	github.com/chromedp/cdproto v0.0.0-20210318231247-733a37e2c059

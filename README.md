@@ -7,54 +7,26 @@
 
 Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. You can use query param, string, and URL as an input and go template engine to update input data as well. Ex
 
+Here are some examples
 ```sh
-curl -F template="http://to-html-file" https://pdf-generator-address/pdf/sample.pdf
-curl -F template=@local_html_file https://pdf-generator-address/pdf/sample.pdf
-curl -F https://pdf-generator-address/pdf/sample.pdf?template=<html><body>Some_HTML</body></html>
-curl -F template="http://to-your-template" -F data=@sample.json -F download=true -F waitFor=body https://pdf-generator-address/pdf/sample.pdf
+# This is a serverless so you may have 5 secnods daly in your first call (could start)
+# Also you PDF is gone after you get it once and you cannot use any external dependency in your HTML filesd (single HTML file format)
+SERVER=http://micro-pdf-generator.demo.1.1.1.1.xio.io/pdf/sample.pdf
+
+curl -F template="http://to-html-file" $SERVER
+curl -F template=@local_html_file $SERVER
+curl -F $SERVER?template=<html><body>Some_HTML</body></html>
+curl -F template="http://raw.gitttttttttt -F data=@sample.json -F download=true -F waitFor=body $SERVER
 ```
 
-Parameters
----
+More detils in here:
 
-For any given parameter you can use form field, form file or query string.
-
-* **template** (required): template content in HTML format. If you want to use template engine you can use [Golang template format](https://golang.org/pkg/text/template/).
-* **data** (optional default empty): JSON data if you use golang template in your HTML.
-download (optional default false): force browser to download the PDF (not open).
-* **waitFor** (optional default body): Query string that engine uses to wait for HTML to be ready.
-
-Configurations
----
-
-micro-pdf-generator without any configurations but if you need more customization you can set some environment variables:
-
-* **timeout** (default 15): Default timeout to fetch remote template (using URL)
-* **port** (default 8080)
-* **host** (default 0.0.0.0)
-* **temp_dir** (default OS temp dir)
-* **max_size** (default 6): Maximum template size in MB
-
-To build
-===
-
-    make compile
-
-The binaries will be ready in `bin` directory.
-
-To test
-===
-
-    make test
-
-To print the test converage
-
-    make coverage
-
-To build docker image
-===
-
-    make name=<IMGE_NAME> image
+* [Setup using Serverless (Knative)](docs/knative.md)
+* [Setup on Kubernetes](docs/kubernetes.md)
+* [Setup using Docker](docs/docker.md)
+* [Setup using Binary](docs/binary.md)
+* [Configuration and parameters](docs/configurations.md)
+* [Build and test](docs/build.md)
 
 TODO
 ===
