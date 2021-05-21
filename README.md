@@ -10,12 +10,19 @@ Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) wr
 Here are some examples
 ```sh
 # This is a serverless so you may have 5 secnods daly in your first call (could start)
-# Also you PDF is gone after you get it once and you cannot use any external dependency in your HTML filesd (single HTML file format)
-SERVER=http://micro-pdf-generator.demo.1.1.1.1.xio.io/pdf/sample.pdf
+# Also you PDF is gone after you get it once
+SERVER=http://micro-pdf-generator.demo.161.97.186.241.xip.io/pdf/sample.pdf
 
+# Remote HTML file. Because of security you cannot use external resources, you have to embed them all (CSS, images, ...) in your HTML file
 curl -F template="http://to-html-file" $SERVER
-curl -F template=@local_html_file $SERVER
-curl -F $SERVER?template=<html><body>Some_HTML</body></html>
+
+# Local HTML file
+curl -F template=@docs/invoice-template.html $SERVER -o result.pdf
+
+# HTML file using query string <html><body>Some_HTML</body></html>
+curl "$SERVER?template=%3Chtml%3E%3Cbody%3ESome_HTML%3C%2Fbody%3E%3C%2Fhtml%3E" -o result.pdf
+
+# Template file & JSON data
 curl -F template="http://raw.gitttttttttt -F data=@sample.json -F download=true -F waitFor=body $SERVER
 ```
 
