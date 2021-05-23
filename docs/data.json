@@ -1,0 +1,34 @@
+{
+    "id": "S1234346",
+    "description": "Some extra information about your invoice",
+    "name": "Hamed Abdollahpour",
+    "address": "Hermannstraße 1100, 12345 Berlin",
+    "items": [
+        {
+            "to": "Hamed Abdollahpour",
+            "description": "Front and reader brake cables",
+            "quntity": "1",
+            "price": 100,
+            "total": 100
+        },
+        {
+            "to": "...",
+            "description": "New set of pedal arms",
+            "quntity": "2",
+            "price": 400,
+            "total": 800
+        },
+        {
+            "to": "Hamed Abdollahpour",
+            "description": "Front and reader brake cables",
+            "quntity": "3",
+            "price": 15,
+            "total": 45
+        }
+    ],
+    "sum": {
+        "price": "225.00",
+        "vat": "33.75",
+        "total": "258.75"
+    }
+}

@@ -8,26 +8,23 @@
 
 Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. You can use query param, string, and URL as an input and go template engine to update input data as well. Ex
 
-Here are some examples
+For example:
 ```sh
-# This is a serverless so you may have 5 secnods daly in your first call (could start)
-# Also you PDF is gone after you get it once and you cannot use any external dependency in your HTML filesd (single HTML file format)
-SERVER=http://micro-pdf-generator.demo.1.1.1.1.xio.io/pdf/sample.pdf
+SERVER=http://micro-pdf-generator.demo.161.97.186.241.sslip.io/pdf/sample.pdf
 
-curl -F template="http://to-html-file" $SERVER
-curl -F template=@local_html_file $SERVER
-curl -F $SERVER?template=<html><body>Some_HTML</body></html>
-curl -F template="http://raw.gitttttttttt -F data=@sample.json -F download=true -F waitFor=body $SERVER
+curl \
+  -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/template.html"
+  -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/data.json" \
+   $SERVER -o sample.pdf
 ```
+It uses [Go template format](https://golang.org/pkg/text/template/) but you can also use normal standalone html (for template) and don't pass data.
+You can also use url, file and string for both data and template parameters.
 
-More detils in here:
+# More
 
 * [Setup using Serverless (Knative)](docs/knative.md)
-* [Setup on Kubernetes](docs/kubernetes.md)
 * [Setup using Docker](docs/docker.md)
-* [Setup using Binary](docs/binary.md)
 * [Configuration and parameters](docs/configurations.md)
-* [Build and test](docs/build.md)
 
 TODO
 ===

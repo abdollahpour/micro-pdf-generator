@@ -86,7 +86,7 @@ func (p HttpHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}})
 			return
 		}
-		templateFile, err := p.templatify.ApplyTemplate(templateData, jsonData)
+		templateFile, err = p.templatify.ApplyTemplate(templateData, jsonData)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			jsonapi.MarshalErrors(w, []*jsonapi.ErrorObject{{
