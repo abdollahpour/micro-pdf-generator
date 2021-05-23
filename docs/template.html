@@ -184,9 +184,9 @@
         <h1>INVOICE</h1>
         <p>
           INVOICE NO #<br />
-          S1234345
+          {{.id}}
         </p>
-        <h2>TOTAL - $258.75</h2>
+        <h2>TOTAL - {{.sum.total}}</h2>
       </div>
       <div>
         <svg height="1in" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -237,7 +237,7 @@
               style="display: grid; grid-template-columns: 35% 50% auto; color: white; background-color: var(--orange); padding: 0 .2in 0 .2in; padding-left: 1in;">
               <p>INVOICE TO</p>
               <p>DESCRIPTION</p>
-              <p>QUALITY</p>
+              <p>QUANTITY</p>
             </div>
             <div
               style="display: grid; grid-template-columns: 50% auto; color: white; background-color: var(--muted); padding: 0 .2in;">
@@ -248,50 +248,39 @@
 
           <div style="display: grid; grid-template-columns: 29.5% auto; grid-gap: .1in; width: 8.5in;">
             <div style="padding: 0 .2in 0 1in;">
-              <h4>Hamed Abdollahpour</h4>
-              <p>Hermannstraße 1100, 12345 Berlin</p>
+              <h4>{{.name}}</h4>
+              <p>{{.address}}</p>
             </div>
             <div>
-              <div style="display: grid; grid-template-columns: 46% 22.5% 16% auto; padding: 0 .2in;">
-                <p>Front and reader brake cables</p>
-                <p>1</p>
-                <p>100.00</p>
-                <p>100.00</p>
-              </div>
-              <div style="display: grid; grid-template-columns: 46% 22.5% 16% auto; padding: 0 .2in;">
-                <p>New set of pedal arms</p>
-                <p>2</p>
-                <p>40.00</p>
-                <p>80.00</p>
-              </div>
-              <div style="display: grid; grid-template-columns: 46% 22.5% 16% auto; padding: 0 .2in;">
-                <p>Labor 3hrs</p>
-                <p>3</p>
-                <p>15.00</p>
-                <p>45.00</p>
-              </div>
-            </div>
+              {{range .items}}
+                <div style="display: grid; grid-template-columns: 46% 22.5% 16% auto; padding: 0 .2in;">
+                  <p>{{.description}}</p>
+                  <p>{{.quntity}}</p>
+                  <p>{{.price}}</p>
+                  <p>{{.total}}</p>
+                </div>
+              {{end}}
           </div>
 
           <div style="display: grid; grid-template-columns: 74% auto; grid-gap: .1in; width: 8.5in;">
             <div style="color: white; background-color: var(--orange); padding: 0 .2in 0 .2in; padding-left: 1in;">
-              <p>dsfsdaf</p>
+              <p>{{.descriptioin}}</p>
             </div>
             <div>
               <div
                 style="display: grid; grid-template-columns: 50% auto; color: white; background-color: var(--muted); padding: 0 .2in;">
                 <p></p>
-                <p>225.00</p>
+                <p>{{.sum.price}}</p>
               </div>
               <div
                 style="display: grid; grid-template-columns: 50% auto; color: white; background-color: var(--muted); padding: 0 .2in;">
                 <p>VAT (15%)</p>
-                <p>33.75</p>
+                <p>{{.sum.vat}}</p>
               </div>
               <div
                 style="display: grid; grid-template-columns: 50% auto; color: white; background-color: var(--muted); padding: 0 .2in;">
                 <p>TOTAL</p>
-                <p>258.75</p>
+                <p>{{.sum.total}}</p>
               </div>
             </div>
           </div>

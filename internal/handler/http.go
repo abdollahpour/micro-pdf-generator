@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -75,6 +76,7 @@ func (p HttpHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if len(data) > 0 {
 		var jsonData interface{}
 		err := json.NewDecoder(strings.NewReader(data)).Decode(&jsonData)
+		fmt.Println(jsonData)
 		if err != nil {
 			log.WithError(err).WithField("data", data).Warn("'data' param is in valid JSON")
 			w.WriteHeader(http.StatusBadRequest)
@@ -86,7 +88,7 @@ func (p HttpHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}})
 			return
 		}
-		templateFile, err := p.templatify.ApplyTemplate(templateData, jsonData)
+		templateFile, err = p.templatify.ApplyTemplate(templateData, jsonData)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			jsonapi.MarshalErrors(w, []*jsonapi.ErrorObject{{
