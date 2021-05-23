@@ -6,9 +6,7 @@
 
 # micro-pdf-generator
 
-Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. You can use query param, string, and URL as an input and go template engine to update input data as well. Ex
-
-For example:
+Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. For example:
 ```sh
 curl \
   -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/template.html"
@@ -16,7 +14,7 @@ curl \
    http://micro-pdf-generator.demo.161.97.186.241.sslip.io/pdf/sample.pdf-o sample.pdf
 ```
 It uses [Go template format](https://golang.org/pkg/text/template/) but you can also use normal standalone html (for template) and don't pass data.
-You can also use url, file and string for both data and template parameters.
+You can also use url, file and string for both data and template parameters (check [configurations](docs/configurations.md))
 
 # More
 
