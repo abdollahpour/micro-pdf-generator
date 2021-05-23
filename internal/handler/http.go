@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -76,7 +75,6 @@ func (p HttpHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if len(data) > 0 {
 		var jsonData interface{}
 		err := json.NewDecoder(strings.NewReader(data)).Decode(&jsonData)
-		fmt.Println(jsonData)
 		if err != nil {
 			log.WithError(err).WithField("data", data).Warn("'data' param is in valid JSON")
 			w.WriteHeader(http.StatusBadRequest)
