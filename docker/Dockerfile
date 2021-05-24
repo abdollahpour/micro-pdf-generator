@@ -26,8 +26,10 @@ RUN echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repos
 WORKDIR /app/
 COPY --from=builder /build/app .
 
-RUN addgroup -S app && adduser -S -G app app
-RUN chown -R app:app /app
-USER app
+# TODO: Run the app on non-root use and make sure chrome has access to temp files
+# RUN addgroup -S app && adduser -S -G app app
+# RUN chown -R app:app /app
+# RUN chmod -R +r /tmp
+# USER app
 
 ENTRYPOINT [ "./app" ]
