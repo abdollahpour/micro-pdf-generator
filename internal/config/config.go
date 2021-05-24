@@ -19,7 +19,7 @@ func NewEnvConfiguration() Configuration {
 	var conf Configuration
 	envconfig.Process("MPG", &conf)
 	if len(conf.TempDir) == 0 {
-		dir, err := ioutil.TempDir("", "*.html")
+		dir, err := ioutil.TempDir("", "mpg_*")
 		if err != nil {
 			log.Fatal(err)
 		}
