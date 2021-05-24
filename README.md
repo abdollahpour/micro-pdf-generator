@@ -7,25 +7,27 @@
 # micro-pdf-generator
 
 Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) written in Go for PDF generating. micro-pdf-generator can be used as a private or public HTTP service for massive HTML to pdf conversion. For example:
+
 ```sh
 curl \
-  -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/template.html"
-  -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/data.json" \
-   http://micro-pdf-generator.demo.161.97.186.241.sslip.io/pdf/sample.pdf-o sample.pdf
+  -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/template.html" \
+  -F data="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/data.json" \
+   http://micro-pdf-generator.demo.161.97.186.241.sslip.io/pdf/sample.pdf -o sample.pdf
 ```
+
 It uses [Go template format](https://golang.org/pkg/text/template/) but you can also use normal standalone html (for template) and don't pass data.
 You can also use url, file and string for both data and template parameters (check [configurations](docs/configurations.md))
 
 # More
 
-* [Setup using Serverless (Knative)](docs/knative.md)
-* [Setup using Docker](docs/docker.md)
-* [Configuration and parameters](docs/configurations.md)
+- [Setup using Serverless (Knative)](docs/knative.md)
+- [Setup using Docker](docs/docker.md)
+- [Configuration and parameters](docs/configurations.md)
 
-TODO
-===
-* Add more test
-* Complete docs
-* Complete templates
-* Add system template for HTML errors
-* Add JSON schema support
+# TODO
+
+- Add more test
+- Complete docs
+- Complete templates
+- Add system template for HTML errors
+- Add JSON schema support
