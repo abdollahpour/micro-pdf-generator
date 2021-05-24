@@ -119,7 +119,7 @@ func (p HttpHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		jsonapi.MarshalErrors(w, []*jsonapi.ErrorObject{{
 			Title:  "Rendering failed",
-			Detail: "Failed to render PDF from generate HTML template",
+			Detail: "Failed to render PDF from generate HTML template. " + err.Error(),
 			Status: "500",
 			Code:   "REQ-104",
 		}})
