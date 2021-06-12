@@ -15,3 +15,4 @@ spec:
         - image: abdollahpour/micro-pdf-generator
 ```
 
+For more information check [knative serving](https://knative.dev/docs/serving/) documentations.
