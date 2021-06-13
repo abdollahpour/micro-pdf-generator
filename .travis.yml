@@ -22,7 +22,7 @@ before_install:
 script:
   - make test
   - $GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
-  - make GOLANG_VERSION="${GOLANG_VERSION%.x}" APP_VERSION="${APP_VERSION}" DOCKER_IMAGE="${DOCKER_IMAGE}" image
+  - make GOLANG_VERSION="${GOLANG_VERSION%.x}" APP_VERSION="${APP_VERSION##*(v)}" image
 
 after_success:
   - $GOPATH/bin/goveralls -service=travis-ci -coverprofile=coverage.out
