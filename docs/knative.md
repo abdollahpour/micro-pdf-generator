@@ -1,4 +1,4 @@
-You can simply run micro-pdf-generator a severless application on [Knative](knative.dev) and manage your resource more efficiently. For example:
+You can simply run micro-pdf-generator as a severless application on [Knative](knative.dev) and manage your resource more efficiently. For example:
 
 ```yaml
 apiVersion: serving.knative.dev/v1

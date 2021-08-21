@@ -20,8 +20,9 @@ You can also use url, file and string for both data and template parameters (che
 
 # More
 
-- [Setup using Serverless (Knative)](docs/knative.md)
-- [Setup using Docker](docs/docker.md)
+- [Running using Kubernetes](docs/kubernetes.md)
+- [Running using Serverless (Knative)](docs/knative.md)
+- [Running using Docker](docs/docker.md)
 - [Configuration and parameters](docs/configurations.md)
 
 # TODO
