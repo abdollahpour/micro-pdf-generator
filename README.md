@@ -12,7 +12,7 @@ Fast HTTP [microservice](http://microservices.io/patterns/microservices.html) wr
 curl \
   -F template="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/template.html" \
   -F data="https://raw.githubusercontent.com/abdollahpour/micro-pdf-generator/master/docs/data.json" \
-   https://micro-pdf-generator.knative.abdollahpour.com/pdf/sample.pdf -o sample.pdf
+   https://micro-pdf-generator.abdollahpour.com/pdf/sample.pdf -o sample.pdf
 ```
 
 It uses [Go template format](https://golang.org/pkg/text/template/) but you can also use normal standalone html (for template) and don't pass data.
