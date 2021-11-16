@@ -7,16 +7,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: golang:1.16
+      image: golang:1.16-alpine
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - uses: browser-actions/setup-chrome@latest
+      - name: Install chrome
+        run: |
+          apk update && apk upgrade && apk add --no-cache bash git build-base chromium
       - name: Install dependencies
         run: |
           go mod download
       - name: Run Unit tests
         run: |
+          export CHROMEDP_DISABLE_GPU=true
           go test -race -covermode atomic -coverprofile=covprofile ./...
       - name: Install goveralls
         run: go install github.com/mattn/goveralls@latest
