@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      - uses: browser-actions/setup-chrome@latest
       - name: Install dependencies
         run: |
           go mod download
