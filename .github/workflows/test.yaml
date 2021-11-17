@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
       - name: Install chrome
         run: |
           apk update && apk upgrade && apk add --no-cache bash git build-base chromium
