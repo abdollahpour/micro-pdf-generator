@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          path: src/github.com/abdollahpour/micro-pdf-generator
       - name: Install chrome
         run: |
           apk update && apk upgrade && apk add --no-cache bash git build-base chromium
@@ -21,6 +23,10 @@ jobs:
         run: |
           export CHROMEDP_DISABLE_GPU=true
           go test -race -covermode atomic -coverprofile=covprofile ./...
-      - uses: shogo82148/actions-goveralls@v1
-        with:
-          path-to-profile: covprofile
+      - name: Install goveralls
+        run: go install github.com/mattn/goveralls@latest
+      - name: Send coverage
+        env:
+          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: goveralls -coverprofile=covprofile -service=github
+        working-directory: src/github.com/abdollahpour/micro-pdf-generator
