@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-        with:
-          path: src/github.com/abdollahpour/micro-pdf-generator
       - name: Install chrome
         run: |
           apk update && apk upgrade && apk add --no-cache bash git build-base chromium
@@ -28,5 +26,6 @@ jobs:
       - name: Send coverage
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: goveralls -coverprofile=covprofile -service=github
-        working-directory: src/github.com/abdollahpour/micro-pdf-generator
+        run: |
+          ls -al
+          goveralls -coverprofile=covprofile -service=github
